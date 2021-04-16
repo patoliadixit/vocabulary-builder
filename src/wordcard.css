@@ -1,0 +1,80 @@
+.word_card_with_meaning {
+  width: 80%;
+  max-width: 100%;
+  height: auto;
+  border: 0.15vw solid green;
+  margin-top: 0.5vw;
+  align-self: center;
+}
+.word_card {
+  display: flex;
+  flex-direction: column;
+  background-color: greenyellow;
+}
+.word_card_known {
+  display: flex;
+  flex-direction: column;
+  background-color: lightskyblue;
+}
+.word_card_unknown {
+  display: flex;
+  flex-direction: column;
+  background-color: tomato;
+}
+div.word_card:hover {
+  background-color: lightpink;
+}
+
+.word_rank {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 3.2vw;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.known_button {
+  width: 25vw;
+  display: flex;
+  justify-content: center;
+}
+
+.known_button button {
+  /* width: 25vw; */
+  font-size: 2vw;
+}
+
+.unknown_button {
+  width: 11vw;
+  font-size: 2vw;
+  align-self: center;
+}
+
+.word {
+  width: 25vw;
+  align-self: center;
+  text-align: center;
+}
+.rank {
+  width: 11vw;
+  text-align: center;
+  align-self: center;
+}
+.meaning {
+  border-top: 2px solid green;
+  font-size: 2vw;
+  padding: 20px;
+  text-align: justify;
+  background-color: khaki;
+}
+.no_highlight {
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
