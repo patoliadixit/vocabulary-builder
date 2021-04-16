@@ -47,4 +47,5 @@ export const wordSlice = createSlice({
     }
   }
 })
+export const { setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } = wordSlice.actions
 export default wordSlice.reducer

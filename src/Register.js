@@ -30,7 +30,6 @@ function Register() {
         setUsername("")
         setPassword("")
         setConfirmPassword("")
-        console.log(res)
       })
 
   }

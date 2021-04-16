@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import WordCard from './WordCard'
 import "./wordcardlist.css"
-import { useTotalKnownContext } from './context'
 import URL from './urls'
+import { useSelector, useDispatch } from 'react-redux'
+import { setOnPage } from './wordSlice'
 function WordCardList() {
-  const [state, dispatch] = useTotalKnownContext()
+  const { word } = useSelector(state => state)
+  const { totalKnown, totalKnownOnPage } = word
+  console.log(totalKnown)
+  const dispatch = useDispatch()
   const [wordList, setWordList] = useState([]);
   const [limit, setLimit] = useState();
-  // const [knownOnPage, setKnownOnPage] = useState(0);
-  let totalKnownOnPage = 0
-  let totalUnknownOnPage = 0
-  const setOnPage = "setOnPage"
+  let totalKnownOnPageNonState = 0
+  let totalUnknownOnPageNonState = 0
   useEffect(() => {
     axios.get(`${URL}/word/list` || 'http://localhost:3001/word/list/', {
       params: {
@@ -24,14 +26,15 @@ function WordCardList() {
         received_data.forEach(val => {
           let result = localStorage.getItem(val.word)
           if (result === "word_card_known") {
-            totalKnownOnPage++
+            totalKnownOnPageNonState++
           } else if (result === "word_card_unknown") {
-            totalUnknownOnPage++
+            totalUnknownOnPageNonState++
           }
           val['status'] = result || "word_card"
           val['expanded'] = false
         })
-        dispatch({ type: setOnPage, payload: { totalKnownOnPage, totalUnknownOnPage } })
+
+        dispatch(setOnPage({ totalKnownOnPage: totalKnownOnPageNonState, totalUnknownOnPage: totalUnknownOnPageNonState }))
         setWordList(received_data)
       })
   }, [limit]);
@@ -39,14 +42,12 @@ function WordCardList() {
   const nextHandler = (event) => {
     event.preventDefault()
     setLimit(prv => {
-      console.log(prv)
       return (parseInt(prv || 0) + 100)
     })
   }
   const prvHandler = (event) => {
     event.preventDefault()
     setLimit(prv => {
-      console.log(prv)
       let val = parseInt(prv || 0) >= 100 ? parseInt(prv || 0) - 100 : 0
       return (val)
     })
@@ -61,9 +62,9 @@ function WordCardList() {
     <>
       <button onClick={localStorageClear}>Clear Local Storage</button>
       <button onClick={prvHandler}>Previous</button>
-      TotalOnPage:{state.totalKnownOnPage}
+      TotalOnPage:{totalKnownOnPage}
       <button onClick={nextHandler}>Next</button>
-      Total:{state.totalKnown}
+      Total:{totalKnown}
       <div className="word_card_list">
         {wordList.map((elem) => (
           <WordCard WORD={elem} key={elem.rank} />

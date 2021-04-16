@@ -8,7 +8,7 @@
 /backend/config.js
 # testing
 /coverage
-
+/.vscode
 # production
 /build
 

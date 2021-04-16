@@ -1,23 +1,17 @@
 import React, { useState } from 'react'
 import "./wordcard.css"
-import { useTotalKnownContext } from './context'
-
+import { useDispatch } from 'react-redux'
+import { setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } from './wordSlice'
 
 function WordCard({ WORD }) {
-  const [state, dispatch] = useTotalKnownContext()
   const [meaning, setMeaning] = useState(false);
   const [wordCardClasses, setWordCardClasses] = useState(WORD.status);
   const [known, setKnown] = useState(WORD.status);
-  const increaseOneKnown = "increaseOneKnown"
-  const decreaseOneKnown = "decreaseOneKnown"
-  const increaseOneUnknown = "increaseOneUnknown"
-  const decreaseOneUnknown = "decreaseOneUnknown"
-  const clearAll = "clearAll"
+  const dispatch = useDispatch()
   const expandMeaning = (event) => {
     event.preventDefault()
     setMeaning(!meaning)
   }
-
 
   const knownHandler = (event) => {
     event.preventDefault()
@@ -27,12 +21,12 @@ function WordCard({ WORD }) {
     if (result) {
       if (result === "word_card_unknown") {
         localStorage.setItem(WORD.word, "word_card_known")
-        dispatch({ type: increaseOneKnown })
-        dispatch({ type: decreaseOneUnknown })
+        dispatch(increaseOneKnown())
+        dispatch(decreaseOneUnknown())
       }
     } else {
       localStorage.setItem(WORD.word, "word_card_known")
-      dispatch({ type: increaseOneKnown })
+      dispatch(increaseOneKnown())
     }
   }
 
@@ -44,13 +38,14 @@ function WordCard({ WORD }) {
     if (result) {
       if (result === "word_card_known") {
         localStorage.setItem(WORD.word, "word_card_unknown")
-        dispatch({ type: decreaseOneKnown })
-        dispatch({ type: increaseOneUnknown })
+        dispatch(decreaseOneKnown())
+        dispatch(increaseOneUnknown())
 
       }
     } else {
       localStorage.setItem(WORD.word, "word_card_unknown")
-      dispatch({ type: decreaseOneUnknown })
+      console.log("hi")
+      dispatch(increaseOneUnknown())
 
     }
   }
