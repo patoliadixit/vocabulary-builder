@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "./wordcard.css"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } from './wordSlice'
 
 function WordCard({ WORD }) {
@@ -8,6 +8,7 @@ function WordCard({ WORD }) {
   const [wordCardClasses, setWordCardClasses] = useState(WORD.status);
   const [known, setKnown] = useState(WORD.status);
   const dispatch = useDispatch()
+  const { loggedIn } = useSelector(state => state.user)
   const expandMeaning = (event) => {
     event.preventDefault()
     setMeaning(!meaning)
@@ -44,15 +45,8 @@ function WordCard({ WORD }) {
       }
     } else {
       localStorage.setItem(WORD.word, "word_card_unknown")
-      console.log("hi")
       dispatch(increaseOneUnknown())
 
-    }
-  }
-  const buttonDisable = () => {
-    switch (wordCardClasses) {
-      case "word_card":
-        return true
     }
   }
   const knownButtonText = () => {

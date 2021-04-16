@@ -1,26 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
-let totalKnownItemsInLocalStorage = 0
-let totalUnknownItemsInLocalStorage = 0
-let totalKnownOnPage = 0
-let totalUnknownOnPage = 0
-Object.values(localStorage).forEach(val => {
-  if (val === "word_card_known") {
-    totalKnownItemsInLocalStorage++
-  }
-  if (val === "word_card_unknown") {
-    totalUnknownItemsInLocalStorage++
-  }
-})
+
 const initialState = {
-  totalKnown: totalKnownItemsInLocalStorage,
-  totalUnknown: totalUnknownItemsInLocalStorage,
-  totalKnownOnPage,
-  totalUnknownOnPage
+  totalKnown: 0,
+  totalUnknown: 0,
+  totalKnownOnPage: 0,
+  totalUnknownOnPage: 0
 }
 export const wordSlice = createSlice({
   name: "word",
   initialState,
   reducers: {
+    setInitial: (state, action) => {
+      state.totalKnown = action.payload.totalKnown
+      state.totalUnknown = action.payload.totalUnknown
+    },
     increaseOneKnown: (state, action) => {
       state.totalKnownOnPage += 1
       state.totalKnown += 1
@@ -47,5 +40,5 @@ export const wordSlice = createSlice({
     }
   }
 })
-export const { setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } = wordSlice.actions
+export const { setInitial, setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } = wordSlice.actions
 export default wordSlice.reducer

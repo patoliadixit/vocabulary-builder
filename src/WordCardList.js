@@ -4,16 +4,36 @@ import WordCard from './WordCard'
 import "./wordcardlist.css"
 import URL from './urls'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOnPage } from './wordSlice'
+import { setOnPage, setInitial } from './wordSlice'
 function WordCardList() {
-  const { word } = useSelector(state => state)
-  const { totalKnown, totalKnownOnPage } = word
-  console.log(totalKnown)
+  const { totalKnown, totalKnownOnPage } = useSelector(state => state.word)
   const dispatch = useDispatch()
   const [wordList, setWordList] = useState([]);
   const [limit, setLimit] = useState();
   let totalKnownOnPageNonState = 0
   let totalUnknownOnPageNonState = 0
+  const { loggedIn } = useSelector(state => state.user)
+  const WordData = () => {
+    let totalKnownItemsInLocalStorage = 0
+    let totalUnknownItemsInLocalStorage = 0
+    if (loggedIn) {
+
+    }
+    if (!loggedIn) {
+      Object.values(localStorage).forEach(val => {
+        if (val === "word_card_known") {
+          totalKnownItemsInLocalStorage++
+        }
+        if (val === "word_card_unknown") {
+          totalUnknownItemsInLocalStorage++
+        }
+      })
+    }
+    dispatch(setInitial({ totalKnown: totalKnownItemsInLocalStorage, totalUnknown: totalUnknownItemsInLocalStorage }))
+  }
+  useEffect(() => {
+    WordData()
+  }, [])
   useEffect(() => {
     axios.get(`${URL}/word/list` || 'http://localhost:3001/word/list/', {
       params: {
