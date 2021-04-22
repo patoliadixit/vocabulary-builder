@@ -8,6 +8,7 @@ const Word = require('./models/Word')
 const wordRouter = require('./routes/word')
 const registerRouter = require('./routes/register')
 const loginRouter = require('./routes/login')
+const userRouter = require('./routes/user')
 const { check_auth } = require('./validators/validators')
 const app = express()
 app.use(cors())
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/word/', wordRouter)
 app.use('/register/', registerRouter)
 app.use('/login/', loginRouter)
+app.use('/user/', userRouter)
 const PORT = 5001
 app.listen(PORT, () => {
   console.log(`connected to port ${PORT}`)

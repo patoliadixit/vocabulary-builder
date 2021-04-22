@@ -8,7 +8,6 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
-
   const onSubmitHandler = (event) => {
     event.preventDefault()
     if (username.trim() == "") {
@@ -29,6 +28,8 @@ function Login() {
         dispatch(logging_in({ username }))
         localStorage.setItem('token', res.data.token)
         console.log(localStorage.getItem('token'))
+        setPassword('')
+        setUsername('')
       })
   }
   const usernameChange = (event) => {

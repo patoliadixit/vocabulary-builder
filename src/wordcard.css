@@ -6,7 +6,7 @@
   margin-top: 0.5vw;
   align-self: center;
 }
-.word_card {
+.word_card_ {
   display: flex;
   flex-direction: column;
   background-color: greenyellow;
@@ -21,7 +21,7 @@
   flex-direction: column;
   background-color: tomato;
 }
-div.word_card:hover {
+div.word_card_:hover {
   background-color: lightpink;
 }
 

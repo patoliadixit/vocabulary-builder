@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-
 const initialState = {
   loggedIn: Boolean(localStorage.getItem('username')),
   username: localStorage.getItem('username')
@@ -17,6 +16,7 @@ const userSlice = createSlice({
       state.loggedIn = false
       state.username = ""
       localStorage.removeItem('username')
+      localStorage.removeItem('token')
     }
   }
 })

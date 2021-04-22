@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import "./wordcard.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } from './wordSlice'
-
+import URL from './urls'
+import axios from 'axios'
 function WordCard({ WORD }) {
   const [meaning, setMeaning] = useState(false);
   const [wordCardClasses, setWordCardClasses] = useState(WORD.status);
@@ -13,10 +14,30 @@ function WordCard({ WORD }) {
     event.preventDefault()
     setMeaning(!meaning)
   }
-
   const knownHandler = (event) => {
     event.preventDefault()
     event.stopPropagation()
+    if (loggedIn) {
+      const token = localStorage.getItem('token')
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      let data = {
+        username: 'dixit',
+        word: WORD.word,
+        rank: WORD.rank,
+        status: "known"
+      }
+      axios.post(`${URL}/user/`, data, config)
+      setWordCardClasses("word_card_known")
+      if (WORD.status === "word_card_unknown") {
+        dispatch(increaseOneKnown())
+        dispatch(decreaseOneUnknown())
+      } else {
+        dispatch(increaseOneKnown())
+      }
+      return
+    }
     setWordCardClasses("word_card_known")
     let result = localStorage.getItem(WORD.word)
     if (result) {
@@ -30,10 +51,24 @@ function WordCard({ WORD }) {
       dispatch(increaseOneKnown())
     }
   }
-
   const unknownHandler = (event) => {
     event.preventDefault()
     event.stopPropagation()
+    if (loggedIn) {
+      let data = {
+        username: 'dixit',
+        word: WORD.word,
+        rank: WORD.rank,
+        status: "unknown"
+      }
+      const token = localStorage.getItem('token')
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      axios.post(`${URL}/user/`, data, config)
+      setWordCardClasses("word_card_unknown")
+      return
+    }
     setWordCardClasses("word_card_unknown")
     let result = localStorage.getItem(WORD.word)
     if (result) {
@@ -51,12 +86,12 @@ function WordCard({ WORD }) {
   }
   const knownButtonText = () => {
     if (wordCardClasses === "word_card_unknown") {
-      return "Yes I Know"
+      return ["Yes I Know", false]
     }
     if (wordCardClasses === "word_card_known") {
-      return "Known"
+      return ["Known", true]
     }
-    return "Yes I know"
+    return ["Yes I know", false]
   }
   const unknownButtonText = () => {
     if (wordCardClasses === "word_card_known") {
@@ -81,7 +116,11 @@ function WordCard({ WORD }) {
           </div>
           <div className="btns">
             <div className="known_button">
-              <button onClick={knownHandler} className="no_highlight">{knownButtonText()}</button>
+              <button
+                disabled={knownButtonText()[1]}
+                onClick={knownHandler}
+                className="no_highlight"
+              >{knownButtonText()[0]}</button>
             </div>
             <div >
               <button onClick={unknownHandler} className="unknown_button no_highlight">{unknownButtonText()}</button>
