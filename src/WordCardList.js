@@ -4,13 +4,13 @@ import WordCard from './WordCard'
 import "./wordcardlist.css"
 import URL from './urls'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOnPage, setInitial } from './wordSlice'
+import { setOnPage, setInitial, setCurrentPage, setCurrentPageTo } from './wordSlice'
 function WordCardList() {
   const { loggedIn } = useSelector(state => state.user)
-  const { totalKnown, totalKnownOnPage } = useSelector(state => state.word)
+  const { totalKnown, totalKnownOnPage, currentPage } = useSelector(state => state.word)
   const dispatch = useDispatch()
   const [wordList, setWordList] = useState([]);
-  const [limit, setLimit] = useState();
+  const [pageInput, setPageInput] = useState('');
   let totalKnownOnPageNonState = 0
   let totalUnknownOnPageNonState = 0
   const WordData = () => {
@@ -44,8 +44,8 @@ function WordCardList() {
       axios.get(`${URL}/user/`,
         {
           params: {
-            lower: limit || 0,
-            upper: parseInt(limit || 0) + 100
+            lower: (currentPage - 1) * 100 || 0,
+            upper: parseInt((currentPage - 1) * 100 || 0) + 100
           },
           headers: { Authorization: `Bearer ${token}` }
         })
@@ -68,8 +68,8 @@ function WordCardList() {
     if (!loggedIn) {
       axios.get(`${URL}/word/list`, {
         params: {
-          lower: limit || 0,
-          upper: parseInt(limit || 0) + 100,
+          lower: (currentPage - 1) * 100 || 0,
+          upper: parseInt((currentPage - 1) * 100 || 0) + 100
         }
       })
         .then((res) => {
@@ -89,7 +89,7 @@ function WordCardList() {
           setWordList(received_data)
         })
     }
-  }, [limit]);
+  }, [currentPage]);
 
   useEffect(() => {
     WordData()
@@ -97,25 +97,34 @@ function WordCardList() {
 
   const nextHandler = (event) => {
     event.preventDefault()
-    setLimit(prv => {
-      return (parseInt(prv || 0) + 100)
-    })
+    dispatch(setCurrentPage(1))
   }
   const prvHandler = (event) => {
     event.preventDefault()
-    setLimit(prv => {
-      let val = parseInt(prv || 0) >= 100 ? parseInt(prv || 0) - 100 : 0
-      return (val)
-    })
+    if (currentPage > 1) {
+      dispatch(setCurrentPage(-1))
+      return
+    }
+
   }
   const localStorageClear = (event) => {
     event.preventDefault()
     localStorage.clear()
     window.location.reload()
   }
-
+  const formOnSubmitHandler = (event) => {
+    event.preventDefault()
+    if (pageInput !== "") {
+      dispatch(setCurrentPageTo(pageInput))
+      setPageInput(1)
+    }
+  }
   return (
     <>
+      <form onSubmit={formOnSubmitHandler}>
+        <input value={pageInput} onChange={e => setPageInput(e.target.value)} type="number" max="323" min="1"></input>
+        <button type="submit">Go to Page</button>
+      </form>
       <button onClick={localStorageClear}>Clear Local Storage</button>
       <button onClick={prvHandler}>Previous</button>
       TotalOnPage:{totalKnownOnPage}

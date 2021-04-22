@@ -4,12 +4,19 @@ const initialState = {
   totalKnown: 0,
   totalUnknown: 0,
   totalKnownOnPage: 0,
-  totalUnknownOnPage: 0
+  totalUnknownOnPage: 0,
+  currentPage: 1
 }
 export const wordSlice = createSlice({
   name: "word",
   initialState,
   reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage += action.payload
+    },
+    setCurrentPageTo: (state, action) => {
+      state.currentPage = action.payload
+    },
     setInitial: (state, action) => {
       state.totalKnown = action.payload.totalKnown
       state.totalUnknown = action.payload.totalUnknown
@@ -40,5 +47,5 @@ export const wordSlice = createSlice({
     }
   }
 })
-export const { setInitial, setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } = wordSlice.actions
+export const { setCurrentPage, setCurrentPageTo, setInitial, setOnPage, clearAll, decreaseOneKnown, decreaseOneUnknown, increaseOneKnown, increaseOneUnknown } = wordSlice.actions
 export default wordSlice.reducer

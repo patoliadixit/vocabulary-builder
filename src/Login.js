@@ -4,10 +4,12 @@ import URL from './urls'
 import jwt from 'jwt-decode'
 import { logging_in } from './userSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
+  const  history = useHistory()
   const onSubmitHandler = (event) => {
     event.preventDefault()
     if (username.trim() == "") {
@@ -24,12 +26,15 @@ function Login() {
     }
     axios.post(`${URL}/login`, user)
       .then(res => {
-        let data = jwt(res.data.token)
         dispatch(logging_in({ username }))
         localStorage.setItem('token', res.data.token)
         console.log(localStorage.getItem('token'))
         setPassword('')
         setUsername('')
+        history.push('/')
+      })
+      .catch(err => {
+        alert('wrong password')
       })
   }
   const usernameChange = (event) => {
