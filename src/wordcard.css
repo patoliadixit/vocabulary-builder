@@ -1,10 +1,21 @@
 .word_card_with_meaning {
-  width: 80%;
+  width: 100%;
   max-width: 100%;
   height: auto;
   border: 0.15vw solid green;
   margin-top: 0.5vw;
   align-self: center;
+}
+
+@media screen and (max-width: 600px) {
+  .word_card_with_meaning {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 0.15vw solid green;
+    margin-top: 0.5vw;
+    align-self: center;
+  }
 }
 .word_card_ {
   display: flex;
@@ -29,7 +40,7 @@ div.word_card_:hover {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  font-size: 3.2vw;
+  font-size: 30px;
 }
 
 .btns {
@@ -38,35 +49,41 @@ div.word_card_:hover {
   justify-content: space-around;
 }
 .known_button {
-  width: 25vw;
+  width: 50%;
   display: flex;
   justify-content: center;
 }
 
 .known_button button {
-  /* width: 25vw; */
-  font-size: 2vw;
+  font-size: 30px;
 }
 
 .unknown_button {
-  width: 11vw;
-  font-size: 2vw;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
   align-self: center;
+}
+.unknown_button button {
+  font-size: 30px;
 }
 
 .word {
-  width: 25vw;
+  width: 50%;
+  font-size: 30px;
   align-self: center;
   text-align: center;
 }
 .rank {
-  width: 11vw;
+  width: 50%;
+  font-size: 30px;
   text-align: center;
   align-self: center;
 }
 .meaning {
   border-top: 2px solid green;
-  font-size: 2vw;
+  font-size: 25px;
   padding: 20px;
   text-align: justify;
   background-color: khaki;
@@ -77,4 +94,20 @@ div.word_card_:hover {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+@media screen and (max-width: 600px) {
+  .unknown_button button {
+    font-size: 25px;
+  }
+  .known_button button {
+    font-size: 25px;
+  }
+}
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: rgb(199, 195, 195);
+
+  color: rgb(63, 51, 51);
 }

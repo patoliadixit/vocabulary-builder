@@ -5,11 +5,13 @@ import jwt from 'jwt-decode'
 import { logging_in } from './userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import "./Login.css"
+import { Button } from '@material-ui/core'
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
-  const  history = useHistory()
+  const history = useHistory()
   const onSubmitHandler = (event) => {
     event.preventDefault()
     if (username.trim() == "") {
@@ -46,16 +48,22 @@ function Login() {
 
   return (
     <>
-      <div>
-        <form method="POST" onSubmit={onSubmitHandler}>
-          <label>Username:
-        <input value={username} onChange={usernameChange} name="username" />
-          </label>
-          <label>Password:
-        <input value={password} onChange={passwordChange} name="password" type="password" />
-          </label>
-          <button type="submit">Login</button>
-        </form>
+      <div className="login_page">
+        <h1>Login</h1>
+        <div>
+          <form method="POST" onSubmit={onSubmitHandler}>
+            <div className="box">
+              <input
+                value={username}
+                placeholder="username"
+                onChange={usernameChange} name="username" />
+              <input
+                placeholder="password"
+                value={password} onChange={passwordChange} name="password" type="password" />
+              <Button type="submit" variant="contained" color="primary">Login</Button>
+            </div>
+          </form >
+        </div>
       </div>
     </>
   )

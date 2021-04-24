@@ -23,19 +23,30 @@ function Header() {
   return (
     <>
       <div className="header_class">
-        <Button onClick={homeButtonHandler} to="/">
+        <button className="header_buttons" onClick={homeButtonHandler}>
           Home
-        </Button>
+        </button>
         {loggedIn ?
-          <Button onClick={logout_handler}>Logout</Button> :
-          <>
-            <Button component={Link} to="/login">
-              Login
-        </Button>
-            <Button component={Link} to="/register">
-              Register
-        </Button></>
+          <div>
+            <button onClick={logout_handler} className="header_buttons">Logout</button>
+            <button className="header_buttons">
+              <Link to="/profile">
+                Profile
+              </Link>
+            </button> </div> :
+          <div>
+            <button className="header_buttons">
+              <Link to="/login">
+                Login
+              </Link>
+            </button>
+            <button className="header_buttons">
+              <Link to="/register">
+                Register
+              </Link>
+            </button></div>
         }
+
       </div>
     </>
   )

@@ -1,0 +1,23 @@
+.box {
+  margin-top: 20px;
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  flex-direction: column;
+  max-width: 300px;
+  align-items: center;
+}
+.box button {
+  width: 100px;
+  margin-top: 10px;
+}
+.box input {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.login_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,6 +1,6 @@
-.form_container {
+.register_page {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  width: fit-content;
+  align-items: center;
 }

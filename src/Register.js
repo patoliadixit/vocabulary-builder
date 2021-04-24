@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import URL from './urls'
 import "./Register.css"
+import { Button } from '@material-ui/core';
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -44,22 +45,20 @@ function Register() {
   }
   return (
     <>
-      <div >
+      <div className="register_page">
+        <h1>Register</h1>
         <form method="POST" onSubmit={onSubmitHandler}>
-          <div className="form_container">
+          <div className="box">
             <div>
-              <label htmlFor="username">Username:</label>
-              <input id="username" value={username} onChange={usernameChange} name="username" />
+              <input placeholder="username" id="username" value={username} onChange={usernameChange} name="username" />
             </div>
             <div>
-              <label htmlFor="password">Password:</label>
-              <input id="password" value={password} onChange={passwordChange} name="password" type="password" />
+              <input placeholder="password" id="password" value={password} onChange={passwordChange} name="password" type="password" />
             </div>
             <div>
-              <label htmlFor="confirmPassword">Confirm Password:</label>
-              <input id="confirmPassword" value={confirmPassword} onChange={confirmPasswordChange} name="confirmPassword" type="password" />
+              <input placeholder="Confirm Password" id="confirmPassword" value={confirmPassword} onChange={confirmPasswordChange} name="confirmPassword" type="password" />
             </div>
-            <button type="submit">Register</button>
+            <Button variant="contained" color="primary" type="submit">Register</Button>
           </div>
         </form>
       </div>

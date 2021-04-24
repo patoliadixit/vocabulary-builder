@@ -4,6 +4,7 @@ import Header from './Header'
 import WordCardList from './WordCardList'
 import Register from './Register'
 import Login from './Login'
+import Profile from './Profile'
 import { useDispatch } from 'react-redux'
 import { logging_in } from './userSlice'
 import URL from './urls'
@@ -12,11 +13,13 @@ function App() {
   const dispatch = useDispatch()
   useEffect(async () => {
     let token = localStorage.getItem('token')
-    let result = await axios.get(`${URL}/user/login`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    if (result?.data?.username) {
-      dispatch(logging_in(result.data.username))
+    if (token) {
+      let result = await axios.get(`${URL}/user/login`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (result?.data?.username) {
+        dispatch(logging_in(result.data.username))
+      }
     }
   }, [])
   return (
@@ -29,6 +32,9 @@ function App() {
           </Route>
           <Route path="/login/">
             <Login />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/">
             <WordCardList />

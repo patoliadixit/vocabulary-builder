@@ -22,9 +22,9 @@ router.get('/', async (req, res) => {
         words: {
           $filter: {
             input: "$wordData",
-            as: "wo",
-            cond: { $gte: ["$$wo.rank", lower] },
-            cond: { $lte: ["$$wo.rank", upper] }
+            as: "word",
+            cond: { $gte: ["$$word.rank", lower] },
+            cond: { $lte: ["$$word.rank", upper] }
           }
         }
 
@@ -38,6 +38,40 @@ router.get('/', async (req, res) => {
     return ite
   })
   res.json(new_array)
+})
+router.get('/profile', async (req, res) => {
+  let token = req.headers['authorization']
+  token = token.split(' ')[1]
+  jwt.verify(token, SECRET_KEY, async (err, decoded) => {
+    userID = decoded.user.id
+    let user = await User.findOne({ _id: ObjectId(userID) }, { _id: 0, username: 1 })
+    let user_words = await User.aggregate([
+      { $match: { _id: ObjectId(userID) } },
+      {
+        $project: {
+          _id: 0,
+          username: 1,
+          known_words: {
+            $filter: {
+              input: "$wordData",
+
+              as: "word",
+              cond: { $eq: ["$$word.status", "known"] },
+            }
+          },
+          unknown_words: {
+            $filter: {
+              input: "$wordData",
+              as: "word",
+              cond: { $eq: ["$$word.status", "unknown"] },
+            }
+          }
+        }
+      },
+    ])
+    console.log(user_words)
+    res.json(user_words[0])
+  })
 })
 router.get('/login', async (req, res) => {
   let token = req.headers['authorization']

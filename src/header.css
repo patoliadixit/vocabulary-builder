@@ -1,5 +1,27 @@
 .header_class {
   width: 100%;
-  height: 40px; 
-  background-color: tomato;
+  height: 45px;
+  background-color: rgb(50, 151, 162);
+  display: flex;
+  justify-content: space-between;
+}
+
+.header_buttons {
+  border: none;
+  font-size: 29px;
+  background-color: inherit;
+  height: inherit;
+  cursor: pointer;
+  color: black;
+}
+.header_buttons:hover {
+  color: purple;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
 }

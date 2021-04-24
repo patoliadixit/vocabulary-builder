@@ -7,7 +7,6 @@ import axios from 'axios'
 function WordCard({ WORD }) {
   const [meaning, setMeaning] = useState(false);
   const [wordCardClasses, setWordCardClasses] = useState(WORD.status);
-  const [known, setKnown] = useState(WORD.status);
   const dispatch = useDispatch()
   const { loggedIn } = useSelector(state => state.user)
   const expandMeaning = (event) => {
@@ -86,21 +85,21 @@ function WordCard({ WORD }) {
   }
   const knownButtonText = () => {
     if (wordCardClasses === "word_card_unknown") {
-      return ["Yes I Know", false]
+      return ["I Know", false]
     }
     if (wordCardClasses === "word_card_known") {
       return ["Known", true]
     }
-    return ["Yes I know", false]
+    return ["I know", false]
   }
   const unknownButtonText = () => {
     if (wordCardClasses === "word_card_known") {
-      return "Dunno"
+      return ["Don't Know", false]
     }
     if (wordCardClasses === "word_card_unknown") {
-      return "Unknown"
+      return ["Unknown", true]
     }
-    return "Dunno"
+    return ["Don't Know", false]
   }
   return (
     <>
@@ -122,8 +121,10 @@ function WordCard({ WORD }) {
                 className="no_highlight"
               >{knownButtonText()[0]}</button>
             </div>
-            <div >
-              <button onClick={unknownHandler} className="unknown_button no_highlight">{unknownButtonText()}</button>
+            <div className="unknown_button">
+              <button
+                disabled={unknownButtonText()[1]}
+                onClick={unknownHandler} className="no_highlight">{unknownButtonText()}</button>
             </div>
           </div>
         </div>

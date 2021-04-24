@@ -5,6 +5,8 @@ import "./wordcardlist.css"
 import URL from './urls'
 import { useSelector, useDispatch } from 'react-redux'
 import { setOnPage, setInitial, setCurrentPage, setCurrentPageTo } from './wordSlice'
+import { Button, TextField } from '@material-ui/core'
+
 function WordCardList() {
   const { loggedIn } = useSelector(state => state.user)
   const { totalKnown, totalKnownOnPage, currentPage } = useSelector(state => state.word)
@@ -120,24 +122,35 @@ function WordCardList() {
     }
   }
   return (
-    <>
-      <form onSubmit={formOnSubmitHandler}>
-        <input value={pageInput} onChange={e => setPageInput(e.target.value)} type="number" max="323" min="1"></input>
-        <button type="submit">Go to Page</button>
-      </form>
-      <button onClick={localStorageClear}>Clear Local Storage</button>
-      <button onClick={prvHandler}>Previous</button>
-      TotalOnPage:{totalKnownOnPage}
-      <button onClick={nextHandler}>Next</button>
-      Total:{totalKnown}
+    <div className="main_page_container">
+      {!loggedIn && <Button variant="contained" color="secondary" onClick={localStorageClear}>Clear Local Storage</Button>}
+      <div className="button_container">
+        <button className="navigation_buttons" onClick={prvHandler} color="primary" variant="contained">Previous</button>
+        <form onSubmit={formOnSubmitHandler}>
+          <input className="page_input" value={pageInput} onChange={e => setPageInput(e.target.value)} type="number" max="323" min="1"></input>
+          <button className="navigation_buttons" type="submit">Go to Page</button>
+        </form>
+        <button className="navigation_buttons" onClick={nextHandler} >Next</button>
+      </div>
+      <div className="words_known">
+        Total Words Known On This Page: {totalKnownOnPage}
+      </div>
+      <div className="mark_all_container">
+        <Button variant="contained" color="primary">Mark All As Known</Button>
+        <Button variant="contained" color="primary">Mark All As Unknown</Button>
+      </div>
+
       <div className="word_card_list">
         {wordList.map((elem) => (
           <WordCard WORD={elem} key={elem.rank} />
         ))}
       </div>
-      <button onClick={prvHandler}>Previous</button>
-      <button onClick={nextHandler}>Next</button>
-    </>
+      <div className="button_container">
+        <button className="navigation_buttons" onClick={prvHandler}>Previous</button>
+        <span className="page">Page :{currentPage} </span>
+        <button className="navigation_buttons" onClick={nextHandler}>Next</button>
+      </div>
+    </div>
   )
 }
 
