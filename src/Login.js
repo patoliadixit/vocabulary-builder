@@ -1,50 +1,57 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import URL from './urls'
-import jwt from 'jwt-decode'
-import { logging_in } from './userSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import "./Login.css"
-import { Button } from '@material-ui/core'
+import React, { useState } from "react";
+import axios from "axios";
+import URL from "./utils/urls";
+import { logging_in } from "./redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { setCurrentPageTo } from "./redux/wordSlice";
+import "./Login.css";
+import { Button } from "@material-ui/core";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
   const onSubmitHandler = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (username.trim() == "") {
-      window.alert("username must not be Empty")
-      return
+      window.alert("username must not be Empty");
+      return;
     }
     if (password.trim() == "") {
-      window.alert("password must not be Empty")
-      return
+      window.alert("password must not be Empty");
+      return;
     }
     let user = {
       username,
-      password
-    }
-    axios.post(`${URL}/login`, user)
-      .then(res => {
-        dispatch(logging_in({ username }))
-        localStorage.setItem('token', res.data.token)
-        console.log(localStorage.getItem('token'))
-        setPassword('')
-        setUsername('')
-        history.push('/')
+      password,
+    };
+    axios
+      .post(`${URL}/login`, user)
+      .then((res) => {
+        dispatch(logging_in({ username }));
+        localStorage.setItem("token", res.data.token);
+        setPassword("");
+        setUsername("");
+        history.push("/");
+        dispatch(setCurrentPageTo(1));
       })
-      .catch(err => {
-        alert('wrong password')
-      })
-  }
+      .catch((err) => {
+        if (err.response.data.message == "no_user_found") {
+          alert("No user found with that username");
+        } else if (err.response.data.message == "wrong_password") {
+          alert("Wrong Password");
+        } else {
+          alert("something is wrong");
+        }
+      });
+  };
   const usernameChange = (event) => {
-    setUsername(event.target.value)
-  }
+    setUsername(event.target.value);
+  };
   const passwordChange = (event) => {
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   return (
     <>
@@ -56,17 +63,25 @@ function Login() {
               <input
                 value={username}
                 placeholder="username"
-                onChange={usernameChange} name="username" />
+                onChange={usernameChange}
+                name="username"
+              />
               <input
                 placeholder="password"
-                value={password} onChange={passwordChange} name="password" type="password" />
-              <Button type="submit" variant="contained" color="primary">Login</Button>
+                value={password}
+                onChange={passwordChange}
+                name="password"
+                type="password"
+              />
+              <Button type="submit" variant="contained" color="primary">
+                Login
+              </Button>
             </div>
-          </form >
+          </form>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;

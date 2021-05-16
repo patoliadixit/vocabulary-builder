@@ -6,8 +6,8 @@ import Register from './Register'
 import Login from './Login'
 import Profile from './Profile'
 import { useDispatch } from 'react-redux'
-import { logging_in } from './userSlice'
-import URL from './urls'
+import { logging_in } from './redux/userSlice'
+import URL from './utils/urls'
 import axios from 'axios'
 function App() {
   const dispatch = useDispatch()

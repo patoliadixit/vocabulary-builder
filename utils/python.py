@@ -10,7 +10,7 @@ with open('dictionary.json') as f:
     data = json.load(f)
 with open('words.txt') as f:
     words_list = f.readlines()
-for word_ in words_list:w
+for word_ in words_list:
     try:
         word = dict()
         word["word"] = word_.split()[0].lower()
