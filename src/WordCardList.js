@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import WordCard from "./WordCard";
-import "./wordcardlist.css";
+import "./wordCardList.css";
 import URL from "./utils/urls";
 import { useSelector, useDispatch } from "react-redux";
 import {

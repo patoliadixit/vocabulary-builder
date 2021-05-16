@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./wordcard.css";
+import "./wordCard.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   decreaseOneKnown,
